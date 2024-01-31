@@ -2,8 +2,7 @@ const express = require("express");
 const https = require("https");
 const app = express();
 
-//I used two additional API's such as Google Maps Geocoding API and NASA API
-const googleMapsApiKey = 'AIzaSyChyDGGQ6Iq2gt7XBHIyxRRODX7RhIGtyQ';
+const googleMapsApiKey = 'AIzaSyBljJnmtAIBqTq52QZJJWFelE1giDRpQaw';
 const nasaApiKey = 'YhGUtVohDLgmMbk1hr7N3QofWl5yYd8WTIF6EQya ';
 
 app.use(express.static(__dirname + "/public"));
@@ -11,33 +10,6 @@ app.use(express.static(__dirname + "/public"));
 app.get("/", function(req, res) {
     res.sendFile(__dirname + "/index.html"); 
 });
-
-app.get("/location", function(req, res) {
-    const query = req.query.city;
-
-    //using google maps geocoding api to get latitude and longitude
-    const mapUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${googleMapsApiKey}`;
-
-    https.get(mapUrl, function(response) {
-        let data = " ";
-        response.on("data", function(chunk) {
-            data += chunk;
-        });
-
-        response.on("end", function() {
-            const locationData = JSON.parse(data);
-            const location = locationData.results[0].geometry.location;
-
-            // sending it to the front end
-            res.send({
-                // data: locationData,
-                latitude: location.lat,
-                longitude: location.lng
-            });
-        });
-    });
-});
-
 
 app.get("/extra-data", function(req, res) {
     
@@ -153,7 +125,7 @@ app.get("/weather", function(req, res) {
     
                 
             </body>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBljJnmtAIBqTq52QZJJWFelE1giDRpQaw&callback=initMap" async defer></script>
+            <script src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap" async defer></script>
                 <script src="/map.js"></script>
                 <script>
     // Call the initMap function after the page loads
